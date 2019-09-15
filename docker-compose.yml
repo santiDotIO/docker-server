@@ -14,7 +14,6 @@ services:
       - /etc/nginx/vhost.d
       - ./.storage/html:/usr/share/nginx/html
       - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
-    network: app_network
     restart: always
 
   # MySQL
@@ -29,7 +28,6 @@ services:
       - ./.storage/mysql:/var/lib/mysql:rw
     ports:
       - "3306:3306"
-    network: app_network
     restart: always
 
   # MailHog
@@ -40,7 +38,6 @@ services:
       - "1025:1025"
     expose:
       - 8025
-    network: app_network
     restart: always
     depends_on:
       - nginx
@@ -51,9 +48,8 @@ services:
       VIRTUAL_PORT: 8025
 
 # Configure the Docker network to use
-networks:
-  app_network:
-    name: app_network
+# networks:
+#   app_network
 
 # networks:
 #   default:
