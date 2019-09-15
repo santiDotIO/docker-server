@@ -3,27 +3,35 @@ version: '3'
 services:
 
   # Nginx Proxy
-  letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    volumes:
-       - ./.storage/certs:/etc/nginx/certs:rw
-       - /var/run/docker.sock:/var/run/docker.sock:ro
-    volumes_from:
-      - nginx
-    restart: always
-
-  nginx:
+  nginx_proxy:
     image: jwilder/nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     volumes:
+      # - /var/run/docker.sock:/tmp/docker.sock:ro
+      # - ./.storage/certs:/etc/nginx/certs:ro
+      # - /etc/nginx/vhost.d
+      # - ./.storage/html:/usr/share/nginx/html
+      # - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+      volumes:
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - dhparam:/etc/nginx/dhparam
+      - certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./.storage/certs:/etc/nginx/certs:ro
-      - /etc/nginx/vhost.d
-      - ./.storage/html:/usr/share/nginx/html
-      - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+    network_mode: bridge
     restart: always
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes_from:
+      - nginx_proxy
+    volumes:
+      - certs:/etc/nginx/certs:rw
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    network_mode: bridge
 
   # MySQL
   # Point web servers to mysql for MySQL server
@@ -56,11 +64,9 @@ services:
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
       VIRTUAL_PORT: 8025
 
-# Configure the Docker network to use
-# networks:
-#   app_network
-
-# networks:
-#   default:
-#     external:
-#       name: dash
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  certs:
