@@ -1,14 +1,22 @@
 include .env
 
-up-main: 
-	@echo "initiating: main docker-compose"
+up: up-main
+	@echo "bringing main docker-compose up"
 	@docker-compose up -d
 
-up: up-main
 	@for filename in ./applications/*; do \
-		echo "initiating: $$filename"; \
+		echo "bringing $$filename up"; \
         cd $$filename && docker-compose up -d; \
     done
+
+down: 
+	@echo "bringing main docker-compose down"
+	@docker-compose up -d
+
+	@for filename in ./applications/*; do \
+		echo "bringing $$filename down"; \
+        cd $$filename && docker-compose down; \
+    done	
 
 # required env
 # APP_NAME = use to name directory
@@ -26,7 +34,7 @@ app-dir:
 generate-env-file:
 	@echo "Generating .env file"
 	@touch $(PWD)/applications/${APP_NAME}/.env
-	@echo "DOCKER_IMAGE='${IMAGE}'" >> $(PWD)/applications/${APP_NAME}/.env
+	@echo "DOCKER_IMAGE=${IMAGE}" >> $(PWD)/applications/${APP_NAME}/.env
 	@echo "HOST_NAME=${HOST_NAME}" >> $(PWD)/applications/${APP_NAME}/.env
 	@echo "LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}" >> $(PWD)/applications/${APP_NAME}/.env
 	@echo "VIRTUAL_HOST='${APP_NAME}'" >> $(PWD)/applications/${APP_NAME}/.env
