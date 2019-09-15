@@ -13,7 +13,7 @@ services:
       - ./.storage/certs:/etc/nginx/certs:ro
       - /etc/nginx/vhost.d
       - ./.storage/html:/usr/share/nginx/html
-      - ./assests/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+      - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
     restart: always
 
   # MySQL
