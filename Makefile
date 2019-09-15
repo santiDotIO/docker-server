@@ -1,9 +1,13 @@
 include .env
 
-make up:
-	docker-compose up -d;
-	@for filename in ./applications/*/docker-compose.yml; do \
-        $(cd $$filename && docker-compose up -d;); \
+up-main: 
+	@echo "initiating: main docker-compose"
+	@docker-compose up -d
+
+up: up-main
+	@for filename in ./applications/*; do \
+		echo "initiating: $$filename"; \
+        cd $$filename && docker-compose up -d; \
     done
 
 # required env
