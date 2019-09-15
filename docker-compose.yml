@@ -14,7 +14,7 @@ services:
       # - /etc/nginx/vhost.d
       # - ./.storage/html:/usr/share/nginx/html
       # - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
-      volumes:
+      # volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
