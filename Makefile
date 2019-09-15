@@ -1,6 +1,6 @@
 include .env
 
-up: up-main
+up:
 	@echo "bringing main docker-compose up"
 	@docker-compose up -d
 
