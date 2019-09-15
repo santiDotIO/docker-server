@@ -11,7 +11,7 @@ up: up-main
 
 down: 
 	@echo "bringing main docker-compose down"
-	@docker-compose up -d
+	@docker-compose down
 
 	@for filename in ./applications/*; do \
 		echo "bringing $$filename down"; \
