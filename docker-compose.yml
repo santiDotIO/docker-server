@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+
+  # Nginx Proxy
+  nginx:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./.storage/certs:/etc/nginx/certs:ro
+      - /etc/nginx/vhost.d
+      - ./.storage/html:/usr/share/nginx/html
+      - ./assests/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+    restart: always
+
+  # MySQL
+  # Point web servers to mysql for MySQL server
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - ./.storage/mysql:/var/lib/mysql:rw
+    ports:
+      - "3306:3306"
+    restart: always
+
+  # MailHog
+  # Point web servers to mailhog:1025 for SMTP Server
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+    expose:
+      - 8025
+    restart: always
+    depends_on:
+      - nginx
+    environment:
+      VIRTUAL_HOST: mailhog.${HOST_NAME}
+      LETSENCRYPT_HOST: mailhog.${HOST_NAME}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      VIRTUAL_PORT: 8025
+
+# Configure the Docker network to use
+networks:
+  default:
+    external:
+      name: dash
