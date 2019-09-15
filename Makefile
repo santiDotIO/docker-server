@@ -10,13 +10,12 @@ up:
     done
 
 down: 
-	@echo "bringing main docker-compose down"
-	@docker-compose down
-
 	@for filename in ./applications/*; do \
 		echo "bringing $$filename down"; \
         cd $$filename && docker-compose down; \
     done	
+	@echo "bringing main docker-compose down"
+	@docker-compose down
 
 # required env
 # APP_NAME = use to name directory
