@@ -8,7 +8,32 @@ Simple Docker setup for hosting multiple project on one server using docker. It 
 - The primary concept is only using docker images. There're plenty of options for bundling and distributing docker images now a days. one example if [GitHubs Package registry](https://help.github.com/en/articles/configuring-docker-for-use-with-github-package-registry). 
 - Docker Compose allows use to load .env configurations. a big part of how this is set up is around managing configurations on .env and leaving the docker-compose for architectural definition.
 
+# What's included
+
+## Docker:
+
+- Nginx proxy for subdomain with auto SSL
+- Shared MySql container: to use in sub application, you must set the host to `mysql`. If. you change the name of the mysql service in docker-compose your sub application need to match that name
+- mailhog server: Mailhog is a email service for capturing outgoing emails.
+
+# Getting Started
+
+- Clone the repo into your server
+- Create a .env file and set env variables
+
+```
+cp .env.example .env
+```
+- Create and application (see below for `make new` command)
+- Bring containers. up
+
+```
+make up
+```
+
+
 # Commands
+
 ## new
 
 Crates new application directory:
