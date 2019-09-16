@@ -3,7 +3,7 @@ version: '3'
 services:
 
   # Nginx Proxy
-  nginx_proxy:
+  nginx-proxy:
     image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
@@ -53,7 +53,7 @@ services:
       - 8025
     restart: always
     depends_on:
-      - nginx_proxy
+      - nginx-proxy
     environment:
       VIRTUAL_HOST: mailhog.${HOST_NAME}
       LETSENCRYPT_HOST: mailhog.${HOST_NAME}
