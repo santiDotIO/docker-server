@@ -21,7 +21,7 @@ services:
 
       - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    network_mode: bridge
+    # network_mode: bridge
     restart: always
 
   letsencrypt:
@@ -31,7 +31,7 @@ services:
     volumes:
       - certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
-    network_mode: bridge
+    # network_mode: bridge
 
   # MySQL
   # Point web servers to mysql for MySQL server
