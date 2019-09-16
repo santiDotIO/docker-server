@@ -5,15 +5,16 @@ services:
   # Nginx Proxy
   nginx_proxy:
     image: jwilder/nginx-proxy
+    container_name: nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     volumes:
-      - conf:/etc/nginx/conf.d
-      - vhost:/etc/nginx/vhost.d
-      - html:/usr/share/nginx/html
-      - dhparam:/etc/nginx/dhparam
-      - certs:/etc/nginx/certs:ro
+      - ./.storage/conf.d:/etc/nginx/conf.d
+      - ./.storage/vhost.d:/etc/nginx/vhost.d
+      - ./.storage/html:/usr/share/nginx/html
+      - ./.storage/dhparam:/etc/nginx/dhparam
+      - ./.storage/certs:/etc/nginx/certs:ro
 
       - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
@@ -24,7 +25,7 @@ services:
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
     volumes:
-      - certs:/etc/nginx/certs:rw
+      - ./.storage/certs:/etc/nginx/certs:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     # network_mode: bridge
 
