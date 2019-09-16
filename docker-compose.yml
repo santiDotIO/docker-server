@@ -13,21 +13,19 @@ services:
       # - ./.storage/certs:/etc/nginx/certs:ro
       # - /etc/nginx/vhost.d
       # - ./.storage/html:/usr/share/nginx/html
-      # - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
-      # volumes:
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
       - dhparam:/etc/nginx/dhparam
       - certs:/etc/nginx/certs:ro
+
+      - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
     network_mode: bridge
     restart: always
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    volumes_from:
-      - nginx_proxy
     volumes:
       - certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
@@ -57,7 +55,7 @@ services:
       - 8025
     restart: always
     depends_on:
-      - nginx
+      - nginx_proxy
     environment:
       VIRTUAL_HOST: mailhog.${HOST_NAME}
       LETSENCRYPT_HOST: mailhog.${HOST_NAME}
