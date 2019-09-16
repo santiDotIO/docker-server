@@ -9,10 +9,6 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      # - /var/run/docker.sock:/tmp/docker.sock:ro
-      # - ./.storage/certs:/etc/nginx/certs:ro
-      # - /etc/nginx/vhost.d
-      # - ./.storage/html:/usr/share/nginx/html
       - conf:/etc/nginx/conf.d
       - vhost:/etc/nginx/vhost.d
       - html:/usr/share/nginx/html
@@ -21,13 +17,12 @@ services:
 
       - ./assets/nginx-custom-config.conf:/etc/nginx/conf.d/my_proxy.conf:ro
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    # network_mode: bridge
+    labels:
+      - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
     restart: always
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    environment:
-      NGINX_PROXY_CONTAINER: nginx_proxy
     volumes:
       - certs:/etc/nginx/certs:rw
       - /var/run/docker.sock:/var/run/docker.sock:ro
