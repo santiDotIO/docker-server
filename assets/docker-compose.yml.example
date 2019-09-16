@@ -7,7 +7,7 @@ services:
       - 80
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST}.${HOST_NAME}
-      LETSENCRYPT_HOST: mailhog.${HOST_NAME}
+      LETSENCRYPT_HOST: ${VIRTUAL_HOST}.${HOST_NAME}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     restart: always
 
