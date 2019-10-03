@@ -74,6 +74,8 @@ services:
       - nginx-proxy
     environment:
       VIRTUAL_HOST: prometheus.${HOST_NAME}
+      LETSENCRYPT_HOST: prometheus.${HOST_NAME}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     volumes:
       - ./.storage/prometheus.yml:/etc/prometheus/prometheus.yml
 
