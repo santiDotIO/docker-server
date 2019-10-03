@@ -18,7 +18,8 @@ down:
 	@docker-compose down
 
 update:
-	@echo "Updating main docker-compose pull"
+	@echo "Updating main services"
+	@git pull
 	@docker-compose pull
 	
 	@for filename in ./applications/*; do \
