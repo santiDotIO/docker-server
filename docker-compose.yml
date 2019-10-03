@@ -75,7 +75,7 @@ services:
     environment:
       VIRTUAL_HOST: prometheus.${HOST_NAME}
     volumes:
-      - /.storage/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./.storage/prometheus.yml:/etc/prometheus/prometheus.yml
 
 volumes:
   conf:
