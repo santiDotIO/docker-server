@@ -6,13 +6,13 @@ up:
 
 	@for filename in ./applications/*; do \
 		echo "bringing $$filename up"; \
-        cd $$filename && docker-compose up -d; \
+        (cd $$filename && docker-compose up -d); \
     done
 
 down: 
 	@for filename in ./applications/*; do \
 		echo "bringing $$filename down"; \
-        cd $$filename && docker-compose down; \
+        (cd $$filename && docker-compose down); \
     done	
 	@echo "bringing main docker-compose down"
 	@docker-compose down
@@ -31,7 +31,7 @@ new:
 	@echo "DOCKER_IMAGE=${IMAGE}" >> $(PWD)/applications/${APP_NAME}/.env
 	@echo "HOST_NAME=${HOST_NAME}" >> $(PWD)/applications/${APP_NAME}/.env
 	@echo "LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}" >> $(PWD)/applications/${APP_NAME}/.env
-	@echo "VIRTUAL_HOST='${APP_NAME}'" >> $(PWD)/applications/${APP_NAME}/.env
+	@echo "VIRTUAL_HOST=${APP_NAME}" >> $(PWD)/applications/${APP_NAME}/.env
 
 
 	@echo "Generating $(PWD)/applications/${APP_NAME}/docker-compose.yml file"
