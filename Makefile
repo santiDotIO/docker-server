@@ -17,6 +17,21 @@ down:
 	@echo "bringing main docker-compose down"
 	@docker-compose down
 
+update:
+	@echo "Updating main docker-compose pull"
+	@docker-compose pull
+	
+	@for filename in ./applications/*; do \
+		echo "Updating $$filename down"; \
+        (cd $$filename && docker-compose pull); \
+    done
+	@make up
+	@make clean
+
+clean:
+	@echo "Removing untagged images"
+	docker rmi $(docker images -f "dangling=true" -q)
+
 # required env
 # APP_NAME = use to name directory
 # IMAGE = Docker image to use
