@@ -73,7 +73,7 @@ services:
     links:
       - nginx-proxy
     environment:
-      VIRTUAL_HOST: mailhog.${HOST_NAME}
+      VIRTUAL_HOST: prometheus.${HOST_NAME}
     volumes:
       - /.storage/prometheus.yml:/etc/prometheus/prometheus.yml
 
