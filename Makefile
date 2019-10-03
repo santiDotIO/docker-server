@@ -31,6 +31,7 @@ update:
 
 clean:
 	@echo "Removing untagged images"
+	@# Might fail if there no images to remove, that's ok
 	docker rmi $(docker images -f "dangling=true" -q)
 
 # required env
