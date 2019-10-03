@@ -24,7 +24,7 @@ services:
 
   letsencrypt:
     image: jrcs/letsencrypt-nginx-proxy-companion
-    depends_on:
+    links:
       - nginx-proxy
     volumes:
       - certs:/etc/nginx/certs:rw
@@ -57,13 +57,25 @@ services:
     expose:
       - 8025
     restart: always
-    depends_on:
+    links:
       - nginx-proxy
     environment:
       VIRTUAL_HOST: mailhog.${HOST_NAME}
       LETSENCRYPT_HOST: mailhog.${HOST_NAME}
       LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
       VIRTUAL_PORT: 8025
+  
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090
+    restart: always
+    links:
+      - nginx-proxy
+    environment:
+      VIRTUAL_HOST: mailhog.${HOST_NAME}
+    volumes:
+      - /.storage/prometheus.yml:/etc/prometheus/prometheus.yml
 
 volumes:
   conf:
